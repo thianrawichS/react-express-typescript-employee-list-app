@@ -27,13 +27,16 @@ const EmployeeList:React.FC<EmployeeListProps> = (props) => {
     const getEmployee = async () => {
         setIsLoading(true)
         try {
-        const employeeData = await HttpService.getEmployeeData(SERVER_API_URL);
-        if (employeeData) {
-            setEmployee(employeeData.results);
-            setIsLoading(false);
-        }
+            const res = await HttpService.getEmployeeData(SERVER_API_URL);
+            if (!res.results || res.signIn === false) {
+                AuthService.authenUser(navigate);
+                return;
+            } 
+            setEmployee(res.results);
         } catch (err) {
-        console.error(`Error fetching data: ${err}`)
+            console.error(`Error fetching data: ${err}`)
+        } finally {
+            setIsLoading(false)
         }
     }
     
@@ -42,9 +45,15 @@ const EmployeeList:React.FC<EmployeeListProps> = (props) => {
     const [searchInput, setSearchInput] = useState<string>('');
     const [searchName, setSearchName] = useState<string>('');
     const searchEmployeeName = async (name:string): Promise<void> => {
-        const res = await HttpService.getEmployeeData(SERVER_API_URL, name);
-        if (res) {
+        try {
+            const res = await HttpService.getEmployeeData(SERVER_API_URL, name);
+            if (!res.results || res.signIn === false) {
+                AuthService.authenUser(navigate);
+                return;
+            }
             setEmployee(res.results);
+        } catch (err) {
+            console.error(`Error while searching employee name: ${err}`)
         }
     }
     const handleSearch = (e:React.FormEvent) => {
@@ -52,9 +61,9 @@ const EmployeeList:React.FC<EmployeeListProps> = (props) => {
         if (searchInput.trim() !== '') {
             searchEmployeeName(searchInput);
             setIsSearch(true);
+            setSearchName(searchInput);
+            setSearchInput('');
         }
-        setSearchName(searchInput)
-        setSearchInput('');
     }
     const cancelSearch = () => {
         setIsSearch(false);
@@ -63,15 +72,15 @@ const EmployeeList:React.FC<EmployeeListProps> = (props) => {
 
     // Delete employee
     const deleteEmployee = async (id: number) => {
-        if (typeof id !== 'undefined') {
         try {
             const res = await HttpService.deleteEmployeeData(SERVER_API_URL, id)
-            if (res) {
-            setEmployee(employee.filter(e => e.id !== id));
+            if (!res.results || res.signIn === false) {
+                AuthService.authenUser(navigate);
+                return;
             }
+            setEmployee(employee.filter(e => e.id !== id));
         } catch (err) {
             console.error(`Error deleting data: ${err}`)
-        }
         }
     }
     const handleDeleteEmployee = (id:number) => {
@@ -117,14 +126,14 @@ const EmployeeList:React.FC<EmployeeListProps> = (props) => {
             const res = await HttpService.putEmployeeData(SERVER_API_URL, newEmployeeData, updateData.id)
             console.log(res)
             if (!res.results || res.signIn === false) {
-            AuthService.authenUser(navigate);
-            return
+                AuthService.authenUser(navigate);
+                return;
             }
             const updatedEmployees = employee.map(emp => {
-            if (emp.id == updateData.id) {
-                return {...emp, ...newEmployeeData};
-            }
-            return emp;
+                if (emp.id == updateData.id) {
+                    return {...emp, ...newEmployeeData};
+                }
+                return emp;
             })
             setEmployee(updatedEmployees)
         } catch (err) {

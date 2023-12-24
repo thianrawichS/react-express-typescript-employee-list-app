@@ -5,15 +5,15 @@ import authenUserMiddleware from '../middlewares/authen';
 const employeeRouter = Router()
 
 // GET Employee data
-employeeRouter.get('/', employeeController.get);
+employeeRouter.get('/', authenUserMiddleware, employeeController.get);
 
 // POST Employee data
-employeeRouter.post('/', employeeController.create);
+employeeRouter.post('/', authenUserMiddleware, employeeController.create);
 
 // PUT Employee data
 employeeRouter.put('/:id', authenUserMiddleware, employeeController.update);
 
 // DELETE Employee data
-employeeRouter.delete('/:id', employeeController.del);
+employeeRouter.delete('/:id', authenUserMiddleware, employeeController.del);
 
 export default employeeRouter 
