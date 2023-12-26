@@ -11,7 +11,7 @@ interface EmployeeListFormProps {
 
 const EmployeeListForm = (props:EmployeeListFormProps) => {
     const { employee, setEmployee } = props
-    const SERVER_API_URL:string = import.meta.env.VITE_SERVER_API;
+    const SERVER_API_URL:string = 'http://localhost:3000';
 
     // FORM INPUT HANDLE
     const [firstName, setFirstName] = useState<string>('');

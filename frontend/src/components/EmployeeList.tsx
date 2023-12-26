@@ -19,7 +19,7 @@ const EmployeeList:React.FC<EmployeeListProps> = (props) => {
         employee,
         setEmployee
     } = props;
-    const SERVER_API_URL:string = import.meta.env.VITE_SERVER_API;
+    const SERVER_API_URL:string = 'http://localhost:3000';
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
