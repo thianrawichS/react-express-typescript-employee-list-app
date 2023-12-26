@@ -5,7 +5,7 @@ import AuthService from "../services/authen";
 import HttpService from "../services/http";
 
 function Login() {
-    const SERVER_API_URL:string = import.meta.env.VITE_SERVER_API;
+    const SERVER_API_URL:string = 'http://localhost:3000';
     const navigate = useNavigate();
 
     const [email, setEmail] = useState<string>('');

@@ -1,0 +1,45 @@
+services:
+
+  db:
+    image: mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+    volumes:
+      - mysql_data:/var/lib/mysql
+      - ./db/db_employee.sql:/docker-entrypoint-initdb.d/db_employee.sql
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    ports:
+      - "${PORT}:3000"
+    environment:
+      PORT: ${PORT}
+      SALTS: ${SALTS}
+      TOKEN_KEY: ${TOKEN_KEY}
+      DB_HOST: db
+      DB_DATABASE: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      VITE_SERVER_API: ${VITE_SERVER_API}
+    env_file:
+      - .env
+      
+volumes:
+  mysql_data:
