@@ -8,6 +8,7 @@ import YourSearchInput from "./YourSearchInput";
 import Swal from "sweetalert2";
 import HttpService from "../services/http";
 import AuthService from "../services/authen";
+import { SERVER_API_URL } from "../configs/serverApiUrl";
 
 interface EmployeeListProps {
     employee: Employee[];
@@ -19,7 +20,6 @@ const EmployeeList:React.FC<EmployeeListProps> = (props) => {
         employee,
         setEmployee
     } = props;
-    const SERVER_API_URL:string = 'http://localhost:3000';
     const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState<boolean>(true);
 
@@ -95,11 +95,6 @@ const EmployeeList:React.FC<EmployeeListProps> = (props) => {
         }).then((result) => {
             if (result.isConfirmed) {
                 deleteEmployee(id)
-                Swal.fire({
-                    title: "Deleted!",
-                    text: "Your file has been deleted.",
-                    icon: "success"
-                });
             }
         });
     }

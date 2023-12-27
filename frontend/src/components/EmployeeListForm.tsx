@@ -3,6 +3,7 @@ import { useState } from 'react'
 import Swal from 'sweetalert2'
 import { Employee } from '../types/employee'
 import HttpService from '../services/http'
+import { SERVER_API_URL } from "../configs/serverApiUrl";
 
 interface EmployeeListFormProps {
     employee: Employee[];
@@ -11,7 +12,6 @@ interface EmployeeListFormProps {
 
 const EmployeeListForm = (props:EmployeeListFormProps) => {
     const { employee, setEmployee } = props
-    const SERVER_API_URL:string = 'http://localhost:3000';
 
     // FORM INPUT HANDLE
     const [firstName, setFirstName] = useState<string>('');
