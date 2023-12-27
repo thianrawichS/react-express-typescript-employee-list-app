@@ -1,7 +1,6 @@
 import HttpService from './http';
 import { NavigateFunction } from 'react-router-dom';
-
-const SERVER_API_URL: string = 'http://localhost:3000';
+import { SERVER_API_URL } from '../configs/serverApiUrl';
 
 class AuthService {
   public static async authenUser (navigate: NavigateFunction) {

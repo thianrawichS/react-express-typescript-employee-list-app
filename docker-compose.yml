@@ -36,10 +36,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8080:8080"
-    environment:
-      VITE_SERVER_API: ${VITE_SERVER_API}
-    env_file:
-      - .env
       
 volumes:
   mysql_data:

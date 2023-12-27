@@ -2,9 +2,9 @@ import { useState, useEffect } from "react";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 import HttpService from "../services/http";
+import { SERVER_API_URL } from "../configs/serverApiUrl";
 
 const Register = () => {
-    const SERVER_API_URL:string = 'http://localhost:3000';
     const navigate = useNavigate();
 
     const [username, setUsername] = useState<string>('');

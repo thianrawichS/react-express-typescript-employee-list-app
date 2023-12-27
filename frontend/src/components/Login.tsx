@@ -3,9 +3,10 @@ import { useNavigate, Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import AuthService from "../services/authen";
 import HttpService from "../services/http";
+import { SERVER_API_URL } from "../configs/serverApiUrl";
 
 function Login() {
-    const SERVER_API_URL:string = 'http://localhost:3000';
+    
     const navigate = useNavigate();
 
     const [email, setEmail] = useState<string>('');
